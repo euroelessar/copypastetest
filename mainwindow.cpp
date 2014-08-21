@@ -37,7 +37,15 @@ void MainWindow::onKeyPress(QKeyEvent *ev)
     const uint searchkey = (ev->modifiers() | ev->key()) & ~(Qt::KeypadModifier | Qt::GroupSwitchModifier);
 
     const QList<QKeySequence> bindings = QKeySequence::keyBindings(QKeySequence::Copy);
-    const bool match = bindings.contains(QKeySequence(searchkey));
+//    const bool match = bindings.contains(QKeySequence(searchkey));
 
-    qDebug() << "searchKey:" << searchkey << QKeySequence(searchkey) << "bindings:" << bindings << "match:" << match;
+    QList<ushort> text;
+    for (QChar ch : ev->text())
+        text << ch.unicode();
+
+    qDebug()
+            << "searchKey:" << QString::number(searchkey, 16).toLatin1() << QKeySequence(searchkey)
+//             << "bindings:" << bindings
+//             << "match:" << match
+             << "text:" << ev->text() << text;
 }
