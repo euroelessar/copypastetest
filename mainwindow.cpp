@@ -36,7 +36,7 @@ void MainWindow::onKeyPress(QKeyEvent *ev)
     //The keypad and group switch modifier should not make a difference
     const uint searchkey = (ev->modifiers() | ev->key()) & ~(Qt::KeypadModifier | Qt::GroupSwitchModifier);
 
-    const QList<QKeySequence> bindings = QKeySequence::keyBindings(QKeySequence::Copy);
+//    const QList<QKeySequence> bindings = QKeySequence::keyBindings(QKeySequence::Copy);
 //    const bool match = bindings.contains(QKeySequence(searchkey));
 
     QList<ushort> text;
@@ -47,5 +47,6 @@ void MainWindow::onKeyPress(QKeyEvent *ev)
             << "searchKey:" << QString::number(searchkey, 16).toLatin1() << QKeySequence(searchkey)
 //             << "bindings:" << bindings
 //             << "match:" << match
-             << "text:" << ev->text() << text;
+            << "text:" << text
+            << "native:" << ev->nativeScanCode();
 }
