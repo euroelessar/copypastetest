@@ -23,6 +23,10 @@ bool MainWindow::eventFilter(QObject *obj, QEvent *ev)
         return QMainWindow::eventFilter(obj, ev);
     }
 
+    if (ev->type() == QEvent::KeyRelease) {
+        ui->hotkeysEdit->clear();
+    }
+
     if (ev->type() != QEvent::KeyPress)
         return false;
 
@@ -49,4 +53,6 @@ void MainWindow::onKeyPress(QKeyEvent *ev)
 //             << "match:" << match
             << "text:" << text
             << "native:" << ev->nativeScanCode();
+
+    ui->hotkeysEdit->setPlainText(QKeySequence(searchkey).toString());
 }
