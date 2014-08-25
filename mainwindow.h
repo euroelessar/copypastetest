@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QShortcutEvent>
 
 namespace Ui {
 class MainWindow;
@@ -19,6 +20,7 @@ public:
     bool eventFilter(QObject *, QEvent *);
 
     void onKeyPress(QKeyEvent *ev);
+    void onShortcut(QShortcutEvent *ev);
 
 private:
     Ui::MainWindow *ui;

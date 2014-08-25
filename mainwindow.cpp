@@ -23,14 +23,12 @@ bool MainWindow::eventFilter(QObject *obj, QEvent *ev)
         return QMainWindow::eventFilter(obj, ev);
     }
 
-    if (ev->type() == QEvent::KeyRelease) {
+    if (ev->type() == QEvent::KeyRelease)
         ui->hotkeysEdit->clear();
-    }
-
-    if (ev->type() != QEvent::KeyPress)
-        return false;
-
-    onKeyPress(static_cast<QKeyEvent *>(ev));
+    else if (ev->type() == QEvent::KeyPress)
+        onKeyPress(static_cast<QKeyEvent *>(ev));
+    else if (ev->type() == QEvent::Shortcut)
+        onShortcut(static_cast<QShortcutEvent *>(ev));
 
     return false;
 }
@@ -40,19 +38,30 @@ void MainWindow::onKeyPress(QKeyEvent *ev)
     //The keypad and group switch modifier should not make a difference
     const uint searchkey = (ev->modifiers() | ev->key()) & ~(Qt::KeypadModifier | Qt::GroupSwitchModifier);
 
-//    const QList<QKeySequence> bindings = QKeySequence::keyBindings(QKeySequence::Copy);
-//    const bool match = bindings.contains(QKeySequence(searchkey));
+    const QList<QKeySequence> bindings = QKeySequence::keyBindings(QKeySequence::Quit);
+    const bool match = bindings.contains(QKeySequence(searchkey));
 
     QList<ushort> text;
-    for (QChar ch : ev->text())
-        text << ch.unicode();
+    for (int i = 0; i < ev->text().size(); ++i)
+        text << ev->text().at(i).unicode();
+
+//    QList<QKeySequence> sequences = QKeySequence::listFromString("Ctrl+Shift+C");
 
     qDebug()
             << "searchKey:" << QString::number(searchkey, 16).toLatin1() << QKeySequence(searchkey)
-//             << "bindings:" << bindings
-//             << "match:" << match
+             << "bindings:" << bindings
+             << "match:" << match
             << "text:" << text
             << "native:" << ev->nativeScanCode();
+//            << "sequence:" << sequences
+//            << "match:" << sequences.contains(QKeySequence(searchkey));
 
     ui->hotkeysEdit->setPlainText(QKeySequence(searchkey).toString());
+}
+
+void MainWindow::onShortcut(QShortcutEvent *ev)
+{
+    qDebug() << "shortcut:" << ev->key()
+             << "ambiguous:" << ev->isAmbiguous()
+             << "id:" << ev->shortcutId();
 }
