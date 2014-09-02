@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include <QDebug>
+//#include <QKeySequenceEdit>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -9,6 +10,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
 
     ui->plainTextEdit->installEventFilter(this);
+
+//    ui->verticalLayout->insertWidget(0, new QKeySequenceEdit(ui->centralWidget));
 }
 
 MainWindow::~MainWindow()
